@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Вакансии</h2>
+    <div class="container my-5">
+        <!-- Информация о вакансии -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="card-title mb-3">{{ vacancy.name }}</h1>
+                <a href="{{ vacancy.link }}" class="btn btn-primary" target="_blank">Первоисточник вакансии</a>
+                <p class="card-text">{{ vacancy.text }}</p>
+            </div>
+        </div>
+
+        <!-- Комментарии -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Комментарии</h5>
+                {% if request.user.is_authenticated %}
+                <!-- Форма добавления комментария -->
+                <form class="mb-5" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                </form>
+
+                <!-- Список комментариев -->
+                <div class="list-group">
+                    <div class="list-group-item mb-3">
+                        {% for comment in comments %}
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">{{ comment.create_time }}</small>
+                        </div>
+                        <p class="mt-2">{{ comment.text }}</p>
+                        {% endfor %}
+                    </div>
+                    <!-- Еще комментарии... -->
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

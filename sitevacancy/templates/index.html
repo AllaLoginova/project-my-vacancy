@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Вакансии</h1>
+    <!-- Список вакансий -->
+    <div class="row g-4">
+        {% for v in vacancy %}
+        <div class="col-md-6">
+            <div class="card vacancy-card">
+                <div class="card-body">
+                    <a href="{% url 'detail_vacancy' v.pk %}">{{ v.name }} {{ v.company }}</a>
+                    {% if v.salary %}
+                    <p class="card-text">Зарплата: {{ v.salary }} руб.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if request.user.is_authenticated %}
+    <!-- Форма добавления вакансии -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Добавить новую вакансию</h5>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
